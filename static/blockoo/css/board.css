@@ -1,0 +1,36 @@
+.board-wrap {
+    width: 940px;
+    float: left;
+}
+
+.row {
+    width: 100%;
+    clear: both;
+    display: table;
+}
+
+.cell {
+    height: 45px;
+    width: 45px;
+    float: left;
+    border: 1px solid black;
+}
+
+.blue {
+    background: blue;
+}
+
+.yellow {
+    background: yellow;
+}
+
+.green {
+    background: green;
+}
+
+.red {
+    background: red;
+}
+.gray {
+    background: darkgray;
+}

@@ -1,0 +1,91 @@
+{% extends 'masterpage.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div
+        id="app"
+    >
+        <div class="board-wrap">
+            <vue-row inline-template
+                     class="row"
+                     v-for="d in grid"
+                     :row-list="d"
+                     @cellclick="handleCellClicked"
+            >
+                <div>
+                    <div
+                        v-for="c in rowList"
+                        :class="['cell', c.color]"
+                        @click="handleClick(c.y, c.x)"
+                    >
+                    </div>
+                </div>
+            </vue-row>
+        </div>
+        <div class="players">
+            <div class="commands">
+                <span>
+                    <button v-on:click="init">New Game</button>
+                </span>
+                <span class="currentPlayer">
+                    <span>Current Player: </span>
+                    <span>[[ currentPlayerName ]]</span>
+                </span>
+                <div class="piece-controls">
+                    <button @click="rotateLeft">Rotate Left</button>
+                    <button @click="rotateRight">Rotate Right</button>
+                    <button @click="setMirrored">Mirror?</button>
+                    <button @click="passPlayer">Pass</button>
+                </div>
+            </div>
+            <player-control
+                inline-template
+                :players="players"
+                @pieceselected="handlePieceSelected"
+                :rotation-mod="rotationMod"
+                :is-mirrored="isMirrored"
+                :selected-piece="selectedPlayerPiece"
+            >
+                <div>
+                    <div
+                            class='player-wrap'
+                            v-for="pl in players"
+                    >
+                        [[ pl.color ]]
+                        <div class="piece-wrap">
+                            <div
+                                class="piece"
+                                v-for="piece in pl.remainingPieces"
+                            >
+                                <piece
+                                    inline-template
+                                    :piece-key="piece.key"
+                                    :player-color="pl.color"
+                                    :rotation-mod="rotationMod"
+                                    :is-mirrored="isMirrored"
+                                    :selected-piece="selectedPiece"
+                                    @pieceselected="handlePieceSelected"
+                                >
+                                    <div
+                                        @click="handlePieceSelection"
+                                        :class="[selected ? 'selected': '', isMirrored ? 'mirrored': '', rotationClass]"
+                                        :style="'background-image: url(static/blockoo/images/' + [[ playerColor ]] + '/_' + [[ pieceKey ]] + '.jpg)'"
+                                    >
+                                    </div>
+                                </piece>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </player-control>
+        </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{% static 'blockoo/js/vue-row.js' %}"></script>
+    <script src="{% static 'blockoo/js/player-control.js' %}"></script>
+    <script src="{% static 'blockoo/js/piece.js' %}"></script>
+    <script src="{% static 'blockoo/js/index.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'blockoo/css/board.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'blockoo/css/players.css' %}">
+{% endblock %}

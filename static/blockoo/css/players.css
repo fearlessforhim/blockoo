@@ -1,0 +1,84 @@
+.players {
+    float: left;
+    margin-left: 10px;
+    border: 1px solid gray;
+    max-width: 900px;
+}
+
+.player-wrap {
+    width: 450px;
+    float: left;
+    height: 450px;
+    overflow: hidden;
+}
+
+.piece {
+    margin-top: 10px;
+    width: 18%;
+    float: left;
+
+}
+
+.piece > div {
+    height: 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100px;
+}
+
+.piece > .ninety {
+    transform: rotate(90deg);
+}
+
+.piece > .oneEighty {
+    transform: rotate(180deg);
+}
+
+.piece > .twoSeventy {
+    transform: rotate(270deg);
+}
+
+.piece > .mirrored {
+    transform: scaleX(-1);
+}
+
+.piece > .ninety.mirrored {
+    transform: scaleX(-1) rotate(90deg);
+}
+
+.piece > .oneEighty.mirrored {
+    transform: scaleX(-1) rotate(180deg);
+}
+
+.piece > .twoSeventy.mirrored{
+    transform: scaleX(-1) rotate(270deg);
+}
+
+.piece > div.selected {
+    border: 1px solid black;
+}
+
+.piece + .piece {
+    margin-left: 5px;
+}
+
+.commands * {
+    padding: 5px;
+}
+
+.piece-row {
+    width: 100%;
+    clear: both;
+    display: table;
+}
+
+.piece-cell {
+    width: 15px;
+    height: 15px;
+    float: left;
+    border: 1px solid black;
+}
+
+.piece-cell.used {
+    background: gray;
+}
