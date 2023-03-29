@@ -7,5 +7,5 @@ class E:
     y = 0
 
 class S:
-    x = 1
+    x = 0
     y = 1
