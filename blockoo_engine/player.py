@@ -1,10 +1,12 @@
 class Player:
 
+    id = -1
     color = ""
     pieceSet = []
     isFinished = False
 
-    def __init__(self, color, pieceSet):
+    def __init__(self, id, color, pieceSet):
+        self.id = id
         self.color = color
         self.pieceSet = pieceSet
 

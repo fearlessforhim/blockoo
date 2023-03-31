@@ -4,6 +4,7 @@ from piece import Piece
 from player import Player
 from termcolor import colored
 from colorama import init
+import json
 
 init()
 
@@ -38,16 +39,16 @@ class GameState:
             Piece('03336'),
         ]
 
-        self.players.append(Player('green', pieces.copy()))
-        self.players.append(Player('red', pieces.copy()))
-        self.players.append(Player('blue', pieces.copy()))
-        self.players.append(Player('yellow', pieces.copy()))
+        self.players.append(Player(0, 'green', pieces.copy()))
+        self.players.append(Player(1, 'red', pieces.copy()))
+        self.players.append(Player(2, 'blue', pieces.copy()))
+        self.players.append(Player(3, 'yellow', pieces.copy()))
 
-    def placePiece(self, sourceX, sourceY, rotationMod, isMirrored, pieceCode, color):
+    def placePiece(self, sourceX, sourceY, rotationMod, isMirrored, pieceCode, playerId):
 
-        self.preTurnCheck(color)
+        self.preTurnCheck(playerId)
 
-        player = self.getPlayerByColor(color)
+        player = self.getPlayerById(playerId)
         piece = player.removePiece(pieceCode)
 
         for i, p in enumerate(self.players):
@@ -55,17 +56,17 @@ class GameState:
                 playerMakingMoveIdx = i
 
         if playerMakingMoveIdx is None or playerMakingMoveIdx is not self.activePlayerId:
-            raise Error(f"It's not your turn, {color}!")
+            raise Error(f"It's not your turn, {player.id}!")
         
         self.myBoard.placePiece(sourceX, sourceY, rotationMod, isMirrored, piece, player.color)
 
         self.postTurnCheck()
 
-    def preTurnCheck(self, color):
+    def preTurnCheck(self, playerId):
         if not self.gameHasActivePlayer():
             raise GameOver()
 
-        if self.getPlayerByColor(color).isFinished:
+        if self.getPlayerById(playerId).isFinished:
             raise Error("Player has passed their turn and cannot play again")
 
     def postTurnCheck(self):
@@ -73,14 +74,22 @@ class GameState:
             raise GameOver()
 
         self.moveToNextTurn()
+        #self.saveGameState()
+
+    def saveGameState(self):
+        gameStateObj = {}
+        gameStateObj['board']  = self.myBoard
+        gameStateObj['players'] = self.players
+        gameStateObj['activePlayerId'] = self.activePlayerId
+        print(json.dumps(gameStateObj))
         
 
-    def getPlayerByColor(self, color):
+    def getPlayerById(self, playerId):
         for p in self.players:
-            if p.color == color:
+            if p.id == playerId:
                 return p
         
-        raise Error("Could not find player: " + color)
+        raise Error("Could not find player id: " + playerId)
 
     def printGameState(self):
         for domain in range(len(self.myBoard.arr)):
@@ -108,8 +117,8 @@ class GameState:
             if not self.players[self.activePlayerId].isFinished:
                 break
 
-    def setPlayerFinished(self, color):
-        self.getPlayerByColor(color).isFinished = True
+    def setPlayerFinished(self, playerId):
+        self.getPlayerById(playerId).isFinished = True
 
         self.postTurnCheck()
 

@@ -97,6 +97,15 @@ class Board:
 
         return isTouchingCorner
 
+    # def toJSON(self):
+    #     return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+    
+    # def fromJSON(self, jsonBoard):
+    #     jsonObj = json.loads(jsonBoard)
+    #     for i in range(0, len(jsonObj)):
+    #         for j in range(0, len(jsonObj)):
+    #             self.arr[i][j] = jsonObj[i][j]
+
 class BoardTranslator:
 
     def translateJson(self, jsonBoard):
