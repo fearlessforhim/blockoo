@@ -1,14 +1,17 @@
-class Player:
+from .errors import PieceHasBeenPlacedError
+
+class PlayerDTO:
 
     id = -1
     color = ""
     pieceSet = []
     isFinished = False
 
-    def __init__(self, id, color, pieceSet):
+    def __init__(self, id, color, pieceSet, isFinished):
         self.id = id
         self.color = color
         self.pieceSet = pieceSet
+        self.isFinished = isFinished
 
     def removePiece(self, pieceCode):
         for pieceObj in self.pieceSet:
@@ -46,6 +49,3 @@ class Player:
         return rtv
 
 
-class PieceHasBeenPlacedError(Exception):
-    def __init__(self, message):
-        self.message = message

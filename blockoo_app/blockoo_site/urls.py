@@ -4,8 +4,10 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('getBoardState/<int:board_id>', views.getBoardState, name='getBoardState'),
-    path('getPlayers/<int:board_id>', views.getBoardPlayers, name='getBoardPlayers'),
-    path('placePiece/<int:board_id>', views.placePiece, name='getBoardPlayers')
+    path('gameAction/<int:board_id>/getBoardState/', views.getBoardState, name='getBoardState'),
+    path('gameAction/<int:board_id>/getPlayers/', views.getBoardPlayers, name='getBoardPlayers'),
+    path('gameAction/<int:board_id>/placePiece/', views.placePiece, name='placePiece'),
+    path('gameAction/<int:board_id>/gameReset/', views.gameReset, name='gameReset'),
+    path('gameAction/<int:board_id>/finishPlayer/', views.finishPlayer, name='finishPlayer')
 
 ]

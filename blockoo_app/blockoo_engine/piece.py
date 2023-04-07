@@ -1,7 +1,9 @@
-from moveType import M0, M1, M2, M3, M4, M5, M6, M7, M8
-class Piece:
+from .moveType import M0, M1, M2, M3, M4, M5, M6, M7, M8
+
+class PieceDTO:
 
     id = ""
+    movements = []
 
     def __init__(self, pieceInstructions):
         self.movements = []

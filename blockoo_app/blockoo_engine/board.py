@@ -1,20 +1,32 @@
 import json
 
-class Board:
+class BoardDTO:
 
     arr = []
 
-    def __init__(self):
+    def __init__(self, stringState):
         self.initialize()
 
-    def placePiece(self, sourceX, sourceY, rotationMod, isMirrored, piece, color):
-        coords = piece.translate({'x': sourceX, 'y': sourceY}, rotationMod, isMirrored)
-        
-        self.isValid(coords, color)
-        for c in coords:
-            self.arr[c['y']][c['x']] = {'color': color, 'y': c['x'], 'x': c['y']}
+        if stringState == "":
+            return;
 
-    def isValid(self, coordinates, color):
+        for (ridx,r) in enumerate(stringState.split("\n")):
+            if self.arr[ridx] is None:
+                self.arr[ridx] = [];
+            for (cidx, c) in enumerate(r.split("|")):
+                    self.arr[ridx][cidx] = c.replace("\r", "")
+
+
+    def placePiece(self, sourceX, sourceY, rotationMod, isMirrored, piece, playerId):
+        print(rotationMod)
+        coords = piece.translate({'x': sourceX, 'y': sourceY}, rotationMod, isMirrored)
+        print(coords)
+        self.isValid(coords, playerId)
+        
+        for c in coords:
+            self.arr[c['y']][c['x']] = str(playerId)
+
+    def isValid(self, coordinates, playerId):
 
         hasTouchingCorner = False
 
@@ -24,12 +36,12 @@ class Board:
 
             if x < 0 or x >= 20 or y < 0 or y >= 20:
                 raise OutOfBoundsError('The piece travels out of bounds')
-            elif self.arr[y][x]['color'] != 'grey':
+            elif self.arr[y][x] != "-1":
                 raise OccupiedSquareError('The piece overlaps another')
-            elif not self.isEdgesValid(x, y, color):
+            elif not self.isEdgesValid(x, y, playerId):
                 raise SharedEdgeError('Edges are shared by the same color')
 
-            if self.isTouchingCorner(x, y, color):
+            if self.isTouchingCorner(x, y, playerId):
                 hasTouchingCorner = True
 
         if not hasTouchingCorner:
@@ -42,52 +54,52 @@ class Board:
         for j in range(0, 20):
             self.arr.append([])
             for i in range(0, 20):
-                self.arr[j].append({'color': 'grey', 'x': j, 'y': i})
+                self.arr[j].append("-1")
 
-    def isEdgesValid(self, x, y, color):
+    def isEdgesValid(self, x, y, playerId):
         try:
-            if self.arr[y + 1][x]['color'] == color:
+            if self.arr[y + 1][x] == str(playerId):
                 return False
         except IndexError:
             pass
         try:
-            if self.arr[y][x + 1]['color'] == color:
+            if self.arr[y][x + 1] == str(playerId):
                 return False
         except IndexError:
             pass
         try:
-            if self.arr[y - 1][x]['color'] == color:
+            if self.arr[y - 1][x] == str(playerId):
                 return False
         except IndexError:
             pass
         try:
-            if self.arr[y][x - 1]['color'] == color:
+            if self.arr[y][x - 1] == str(playerId):
                 return False
         except IndexError:
             pass
 
         return True
 
-    def isTouchingCorner(self, x, y, color):
+    def isTouchingCorner(self, x, y, playerId):
         isTouchingCorner = False
 
         try:
-            if self.arr[y + 1][x + 1]['color'] == color:
+            if self.arr[y + 1][x + 1] == str(playerId):
                 isTouchingCorner = True
         except IndexError:
             pass
         try:
-            if self.arr[y + 1][x - 1]['color'] == color:
+            if self.arr[y + 1][x - 1] == str(playerId):
                 isTouchingCorner = True
         except IndexError:
             pass
         try:
-            if self.arr[y - 1][x + 1]['color'] == color:
+            if self.arr[y - 1][x + 1] == str(playerId):
                 isTouchingCorner = True
         except IndexError:
             pass
         try:
-            if self.arr[y - 1][x - 1]['color'] == color:
+            if self.arr[y - 1][x - 1] == str(playerId):
                 isTouchingCorner = True
         except IndexError:
             pass

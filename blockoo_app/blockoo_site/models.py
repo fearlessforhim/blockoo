@@ -7,6 +7,7 @@ class BoardState(models.Model):
     id = models.PositiveBigIntegerField(primary_key=True, unique=True)
     activePlayerInGameId = models.IntegerField(null=True)
     boardState = models.TextField(null=True)
+    gameIsOver = models.BooleanField(null=False, default=False)
 
     def save(self, *args, **kwargs):
         super(BoardState, self).save(*args, **kwargs)
@@ -22,6 +23,7 @@ class Player(models.Model):
     inGameId = models.IntegerField(null=True)
     color = models.CharField(max_length=10, null=True)
     board = models.ForeignKey(BoardState, on_delete=models.DO_NOTHING)
+    isFinished = models.BooleanField(null=False, default=False)
 
     def save(self, *args, **kwargs):
         super(Player, self).save(*args, **kwargs)
